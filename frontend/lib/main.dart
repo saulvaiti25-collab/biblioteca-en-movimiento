@@ -925,6 +925,42 @@ class _AddBookSheetState extends State<AddBookSheet> {
     }
   }
 
+  Future<void> _generateDescription() async {
+    // Título, autor y categoría son necesarios para que la IA tenga contexto.
+    if (!_form.currentState!.validate()) return;
+    setState(() => _busy = true);
+    try {
+      final result = await Api.request(
+        'POST',
+        '/ai/book-description',
+        token: widget.session.token,
+        body: {
+          'title': _title.text.trim(),
+          'author': _author.text.trim(),
+          'category': _category.text.trim(),
+        },
+      );
+      if (mounted) {
+        setState(
+          () => _description.text = (result['description'] as String).trim(),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Descripción generada con IA.')),
+        );
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.toString().replaceFirst('Exception: ', '')),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   @override
   void dispose() {
     _title.dispose();
@@ -960,9 +996,15 @@ class _AddBookSheetState extends State<AddBookSheet> {
               _field(_author, 'Autor'),
               _field(_category, 'Categoría'),
               _field(_cover, 'URL de portada (opcional)', required: false),
+              OutlinedButton.icon(
+                onPressed: _busy ? null : _generateDescription,
+                icon: const Icon(Icons.auto_awesome),
+                label: const Text('Generar descripción con IA'),
+              ),
+              const SizedBox(height: 12),
               _field(
                 _description,
-                'Descripción (opcional)',
+                'Descripción generada (puedes editarla)',
                 required: false,
                 lines: 3,
               ),

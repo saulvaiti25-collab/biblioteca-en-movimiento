@@ -11,3 +11,5 @@ services:
         sync: false
       - key: APP_ORIGIN
         value: "*"
+      - key: GEMINI_API_KEY
+        sync: false

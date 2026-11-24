@@ -6,8 +6,9 @@ Proyecto nuevo para administrar préstamos de una biblioteca escolar. Incluye ca
 
 - **Frontend:** Flutter para Android y web.
 - **Backend:** FastAPI.
-- **Base de datos:** SQLite para desarrollo local y PostgreSQL para nube.
-- **Publicación prevista:** GitHub, Render y Aiven PostgreSQL.
+- **Base de datos:** SQLite para desarrollo local y PostgreSQL en Render para nube.
+- **Publicación:** GitHub y Render.
+- **IA:** Gemini genera una descripción editable al registrar un libro.
 
 ## Cuentas de prueba
 
@@ -29,6 +30,6 @@ Proyecto nuevo para administrar préstamos de una biblioteca escolar. Incluye ca
 ## Publicar en la nube
 
 1. Sube esta carpeta a un repositorio de GitHub.
-2. Crea PostgreSQL en Aiven y copia su URL en `DATABASE_URL` de Render.
+2. Crea PostgreSQL en Render y conecta su URL interna como `DATABASE_URL` del Web Service.
 3. En Render crea un Web Service desde el repositorio. Render detectará `render.yaml`.
-4. Compila Flutter web con `flutter build web --dart-define=API_URL=https://TU-API.onrender.com` y publícalo como sitio estático.
+4. Para activar la generación de descripciones, crea una llave de Gemini y guárdala en Render con el nombre `GEMINI_API_KEY`. Nunca subas esa llave a GitHub ni la pegues en el frontend.
