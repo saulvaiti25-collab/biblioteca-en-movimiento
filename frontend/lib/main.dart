@@ -945,7 +945,13 @@ class _AddBookSheetState extends State<AddBookSheet> {
           () => _description.text = (result['description'] as String).trim(),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Descripción generada con IA.')),
+          SnackBar(
+            content: Text(
+              result['source'] == 'gemini'
+                  ? 'Descripción generada con IA.'
+                  : 'Gemini está ocupado: se creó un borrador automático que puedes editar.',
+            ),
+          ),
         );
       }
     } catch (error) {
